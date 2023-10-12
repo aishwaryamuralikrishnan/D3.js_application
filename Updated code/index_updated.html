@@ -115,12 +115,15 @@
       // UI --------------------------------------------------------------------
 
       // create a country selector dropdown menu
-      let dropdown = d3.select("#country-dropdown");
+      //let dropdown = d3.select("#country-dropdown");
+      const region1 = d3.select('#country-dropdown').node().value;
+      const queryParams1 = 'region=${region}';
       // populate the country dropdown automatically
       // with the unique regions found in the csv file
       //The JSON data is fetched from the Backend using API endpoints. Full link has to be given as the server runns in a different port
-      d3.json('http://127.0.0.1:3000/api/data').then(function (data) {
-        // get array of countries from csv file
+      
+      d3.json('http://127.0.0.1:3000/api/data${queryParams}').then(function (data) {
+        // get array of countries
         let options = Array.from(
           new Set(
             Object.keys(data).map(function (key) {
@@ -467,8 +470,12 @@
 
       // this function fully loads and parses the csv before
       // further processing steps are applied
+
+      const region = d3.select('#country-dropdown').node().value;
+      const queryParams = 'region=${region}';
+
       async function fetchData() {
-        const inputData = await d3.json('http://127.0.0.1:3000/api/data', function (d) {
+        const inputData = await d3.json('http://127.0.0.1:3000/api/data${queryParams}', function (d) {
           return {
             Region: d.Region,
             Year: +d.Year,
